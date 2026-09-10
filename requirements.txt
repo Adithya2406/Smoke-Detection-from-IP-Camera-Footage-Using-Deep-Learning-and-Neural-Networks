@@ -1,0 +1,7 @@
+numpy>=1.24,<3
+opencv-python>=4.8,<5
+pillow>=10,<13
+streamlit>=1.32,<2
+torch>=2.1
+twilio>=9,<10
+ultralytics>=8.2,<9
