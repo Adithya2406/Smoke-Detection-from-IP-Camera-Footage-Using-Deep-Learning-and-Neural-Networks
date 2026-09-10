@@ -1,96 +1,73 @@
-## Smoke Detection from IP Camera Footage Using Deep Learning and Neural Networks
-A robust tool for real-time smoke and smoker detection from IP camera streams, leveraging deep learning and neural networks to provide instant alerts and notifications for enhanced safety and monitoring.
+# Smoke and Smoker Detection
 
----
-**Table of Contents**
-- Overview  
-- Features  
-- How It Works  
-- Installation  
-- Usage  
-- Application  
-- Alerts & Notifications  
-- Requirements  
-- Contributing  
-- License  
+A Streamlit application for detecting smoke, fire, and smoking activity in images and live camera feeds with YOLOv8 models.
 
----
-## Overview
-This project enables rapid detection of smoke and smokers from live IP camera feeds using advanced deep learning models. It is designed for real-time monitoring in environments where early smoke detection is critical, such as industrial sites, public spaces, and residential buildings. The system provides immediate alerts via multiple channels to ensure prompt response and minimize risks.
-
----
 ## Features
-- Real-time smoke and smoker detection using neural networks  
-- Supports multiple input streams: Webcam and RTSP (IP camera)  
-- User-friendly web interface powered by Streamlit  
-- Choice between Smoke Detection and Smoker Detection models  
-- Multi-channel alert system: phone call, buzzer, and email with attachment  
-- Easy deployment and configuration  
 
----
-## How It Works
-1. The system captures video streams from a webcam or IP camera (RTSP).
-2. Deep learning models process each frame to detect smoke or smokers.
-3. Upon detection, the system triggers alerts to notify users via configured channels.
-4. The web interface allows users to select the detection model and input stream, and monitor results in real time.
+- Separate smoke/fire and smoker-detection models
+- Image upload, webcam, and runtime camera-stream inputs
+- Configurable confidence threshold
+- Annotated detection results
+- Optional local sound, email, and phone alerts
+- Credentials and private camera addresses loaded only at runtime
 
----
-## Installation
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Adithya2406/Smoke-Detection-from-IP-Camera-Footage-Using-Deep-Learning-and-Neural-Networks.git
-   cd Smoke-Detection-from-IP-Camera-Footage-Using-Deep-Learning-and-Neural-Networks
-   ```
-2. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. **Configure alert settings:**  
-   Update the configuration files or environment variables for phone, email, and buzzer integration as needed.
+## Repository contents
 
----
-## Usage
-1. **Run the application:**
-   ```bash
-   streamlit run app.py
-   ```
-2. The web application will open automatically in your default browser (localhost).
-3. Select the detection model: *Smoker Detection* or *Smoke Detection*.
-4. Choose your video input: *Webcam* or *RTSP* stream.
-5. Monitor the live detection results and receive alerts upon detection.
+| Path | Purpose |
+|---|---|
+| `app.py` | Streamlit user interface |
+| `helper.py` | Inference, streaming, and alert helpers |
+| `settings.py` | Portable model and input configuration |
+| `smoke_fire.pt` | Smoke/fire detector |
+| `smoker_robo.pt` | Smoker detector |
+| `smoke_smoker_detect/` | Demo assets and reference YOLO weights |
 
----
-## Application
-- **Fire safety monitoring** in factories, warehouses, and public buildings
-- **Early warning systems** for residential and commercial complexes
-- **Surveillance** in smoke-free zones and public transport
-- **Industrial process monitoring** to detect hazardous emissions
+## Setup
 
----
-## Alerts & Notifications
-On detecting smoke or a smoker, the system can automatically:
-- Make a phone call to a designated number
-- Activate a buzzer for local alerts
-- Send an email with an image attachment of the detected event
+```bash
+git clone <repository-url>
+cd Smoke-Detection-from-IP-Camera-Footage-Using-Deep-Learning-and-Neural-Networks
 
----
-## Requirements
-- Python 3.7+
-- Streamlit
-- OpenCV
-- Deep learning frameworks (e.g., TensorFlow, PyTorch)
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+streamlit run app.py
+```
 
----
-## Contributing
-Pull requests are welcome! For major changes, please open an issue first to discuss your ideas.
+The bundled models are used by default. To use different weights, set `SMOKE_MODEL_PATH` or `SMOKER_MODEL_PATH`.
 
----
-## License
-This project is licensed under the MIT License.
+## Camera streams
 
----
-*For questions or support, please raise an issue on the repository.*
----
+Select **Camera stream** in the sidebar and enter the address at runtime. The value is masked in the interface and is not written to the repository or a configuration file.
 
-![image](https://github.com/OmkarDaivajna/Smoke_Detection/assets/117528879/4dc0e113-fd9b-44bd-9a8c-a1e8d187e334)
+## Optional alerts
 
+Alert delivery is disabled unless all required environment variables for a channel are configured.
+
+Email variables:
+
+```text
+SMTP_HOST
+SMTP_PORT
+SMTP_USERNAME
+SMTP_PASSWORD
+ALERT_SENDER_EMAIL
+ALERT_RECEIVER_EMAIL
+```
+
+Phone variables:
+
+```text
+TWILIO_ACCOUNT_SID
+TWILIO_AUTH_TOKEN
+TWILIO_FROM_NUMBER
+TWILIO_TO_NUMBER
+```
+
+Store these values in your shell environment or an ignored local `.env` file. Never commit credentials or private camera addresses.
+
+## Notes
+
+- The audible alert uses the Windows sound API when available.
+- Model accuracy depends on camera placement, lighting, smoke density, and the training distribution.
+- This prototype should supplement—not replace—certified fire detection and emergency systems.
